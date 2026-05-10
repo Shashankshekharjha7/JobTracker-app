@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    container_name: jobtrackr-backend
+    ports:
+      - "4000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    command: npm run start:dev # or whatever your start command is
+
+  db:
+    image: postgres:15
+    container_name: jobtrackr-db
+    environment:
+      POSTGRES_USER: jobtrackr_user
+      POSTGRES_PASSWORD: AshJha09092003
+      POSTGRES_DB: jobtrackr
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: jobtrackr-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  db-data:
